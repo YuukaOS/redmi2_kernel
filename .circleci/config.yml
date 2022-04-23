@@ -2,14 +2,11 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: ubuntu:18.04
+      - image: ubuntu-2004:current
    steps:
       - run:
           command: |
-           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential libncurses5-dev bzip2 git bc
-           git clone --depth=1 https://github.com/yuukaos/redmi2_kernel.git -b n64
-           wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64_be-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64_be-linux-gnu.tar.xz
-           tar -xvf gcc-linaro-7.5.0-2019.12-x86_64_aarch64_be-linux-gnu.tar.xz
+           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential libncurses5-dev bzip2 git bc wget
            cd redmi2_kernel
            bash build_kernel.sh
 workflows:
