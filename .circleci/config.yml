@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: ubuntu-2004:current
+      - image: ubuntu-2004:202201-02
    steps:
       - run:
           command: |
