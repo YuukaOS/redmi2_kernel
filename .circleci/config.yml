@@ -1,26 +1,19 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+version: 2.1 
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
+  compile:
+   docker:
+      - image: ubuntu:18.04
+   steps:
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+          command: |
+           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential libncurses5-dev bzip2 git bc
+           git clone --depth=1 https://github.com/yuukaos/redmi2_kernel.git -b n64
+           wget https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64_be-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64_be-linux-gnu.tar.xz
+           tar -xvf gcc-linaro-7.5.0-2019.12-x86_64_aarch64_be-linux-gnu.tar.xz
+           cd redmi2_kernel
+           bash build_kernel.sh
 workflows:
-  say-hello-workflow:
+  version: 2.1
+  cooking:
     jobs:
-      - say-hello
+      - compile
